@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  
+  body {
+    @apply bg-zinc-950 text-zinc-100 antialiased;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #27272a;
+  border-radius: 5px;
+  border: 2px solid #09090b;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #3f3f46;
+}
