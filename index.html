@@ -1,13 +1,104 @@
-<!doctype html>
-<html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Fisch Macro | Advanced Roblox Fishing Tool</title>
-    <meta name="description" content="Ultimate Fisch Macro for Roblox. High performance, easy to use, and requires AutoHotkey v2.">
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Exon Macro | Fisch Roblox</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; scroll-behavior: smooth; }
+        .text-glow { text-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
+        .card-glow:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.1); }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
+        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+                <i class="fas fa-anchor text-blue-500 text-2xl"></i>
+                <span class="text-xl font-black uppercase italic tracking-tighter">Exon <span class="text-blue-500">Macro</span></span>
+            </div>
+            <a href="#download" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold transition-all">Скачать</a>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="relative h-screen flex items-center justify-center overflow-hidden">
+        <div class="absolute inset-0 z-0">
+            <img src="https://pibig.info/uploads/posts/2024-11/1730704944_pibig-info-p-fish-robloks-krasivo-6.jpg" class="w-full h-full object-cover opacity-30">
+            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-zinc-950"></div>
+        </div>
+        <div class="relative z-10 text-center px-4 max-w-4xl">
+            <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full mb-8">
+                <span class="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
+                <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Макрос Доступен</span>
+            </div>
+            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter uppercase italic leading-none">Fisch <span class="text-blue-500 text-glow">Macro</span></h1>
+            <p class="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">Экономьте время на нудном гринде. Наш макрос берет всю скучную работу на себя.</p>
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <a href="#download" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl text-lg font-black transition-all hover:scale-105 shadow-2xl shadow-blue-600/30">СКАЧАТЬ BETA</a>
+                <a href="https://www.autohotkey.com/download/ahk-v2.exe" target="_blank" class="w-full sm:w-auto bg-zinc-800/50 hover:bg-zinc-700 text-white px-10 py-5 rounded-2xl text-lg font-black transition-all border border-zinc-700">AHK v2</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Features -->
+    <section class="py-24 bg-zinc-950">
+        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
+            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
+                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-yellow-400"><i class="fas fa-bolt text-3xl"></i></div>
+                <h3 class="text-2xl font-bold mb-4">Высокая Скорость</h3>
+                <p class="text-zinc-400">Оптимизированные алгоритмы для максимально быстрого вылова.</p>
+            </div>
+            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
+                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-green-400"><i class="fas fa-shield-alt text-3xl"></i></div>
+                <h3 class="text-2xl font-bold mb-4">100% Разрешено</h3>
+                <p class="text-zinc-400">Макросы разрешены в Fisch. Бан за них получить невозможно.</p>
+            </div>
+            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
+                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-blue-400"><i class="fas fa-info-circle text-3xl"></i></div>
+                <h3 class="text-2xl font-bold mb-4">AHK v2 Ready</h3>
+                <p class="text-zinc-400">Макрос использует новейший движок v2 для стабильной работы.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Downloads -->
+    <section id="download" class="py-32 bg-zinc-950">
+        <div class="max-w-6xl mx-auto px-6">
+            <h2 class="text-5xl font-black mb-20 text-center uppercase italic">Готовы начать?</h2>
+            <div class="grid lg:grid-cols-2 gap-8">
+                <div class="bg-zinc-900/50 border border-purple-500/20 rounded-[3rem] p-10 flex flex-col justify-between card-glow transition-all">
+                    <div class="mb-10 text-center md:text-left">
+                        <span class="px-4 py-1 bg-blue-600/20 text-blue-400 rounded-full text-[10px] font-black uppercase mb-4 inline-block">Текущая Beta</span>
+                        <h3 class="text-4xl font-black mb-4 italic uppercase">Exon Macro v0.0.12</h3>
+                        <p class="text-zinc-400 text-lg">Для работы обязательно нужен установленный AutoHotkey v2.</p>
+                    </div>
+                    <a href="https://github.com/fragrollback-beep/Macros-fisch/raw/refs/heads/main/ExonMacro0.0.12-beta.zip" class="bg-blue-600 hover:bg-blue-500 text-white py-6 rounded-2xl font-black text-xl text-center shadow-xl transition-all hover:scale-[1.02]">СКАЧАТЬ МАКРОС</a>
+                </div>
+                <div class="bg-zinc-900/50 border border-white/5 rounded-[3rem] p-10 flex flex-col justify-between card-glow transition-all">
+                    <div class="mb-10 text-center md:text-left">
+                        <span class="px-4 py-1 bg-zinc-800 text-zinc-400 rounded-full text-[10px] font-black uppercase mb-4 inline-block">Движок</span>
+                        <h3 class="text-4xl font-black mb-4 italic uppercase">AutoHotkey v2</h3>
+                        <p class="text-zinc-400 text-lg">Необходим для запуска любого .ahk макроса на вашем ПК.</p>
+                    </div>
+                    <a href="https://www.autohotkey.com/download/ahk-v2.exe" target="_blank" class="bg-zinc-800 hover:bg-zinc-700 text-white py-6 rounded-2xl font-black text-xl text-center border border-zinc-700 transition-all hover:scale-[1.02]">СКАЧАТЬ ДВИЖОК</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-24 bg-black border-t border-white/5 text-center px-6">
+        <div class="flex items-center justify-center gap-3 mb-10 text-3xl font-black italic">
+            <i class="fas fa-anchor text-blue-500"></i>
+            <span class="uppercase">Exon <span class="text-blue-500">Macro</span></span>
+        </div>
+        <p class="text-zinc-500 text-lg max-w-3xl mx-auto mb-12">Макросы — легальный инструмент в Fisch. Мы помогаем вам избежать нудного гринда и получать удовольствие от игры.</p>
+        <div class="text-zinc-700 font-bold uppercase text-xs tracking-widest">&copy; 2026 EXON MACRO.</div>
+    </footer>
+</body>
 </html>
