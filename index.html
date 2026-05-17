@@ -1,104 +1,562 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exon Macro | Fisch Roblox</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap');
-        body { font-family: 'Inter', sans-serif; background-color: #09090b; color: white; scroll-behavior: smooth; }
-        .text-glow { text-shadow: 0 0 15px rgba(59, 130, 246, 0.5); }
-        .card-glow:hover { border-color: rgba(59, 130, 246, 0.4); box-shadow: 0 10px 40px -10px rgba(59, 130, 246, 0.1); }
-    </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Exon Macro | Fisch Roblox</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;600;700;800&family=Unbounded:wght@400;700;900&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#06080c;
+  --s1:#0b0f17;
+  --s2:#0f1520;
+  --border:#1a2236;
+  --border2:#243048;
+  --accent:#4d9fff;
+  --accent2:#2563eb;
+  --green:#22d98a;
+  --yellow:#f0c84a;
+  --red:#ff5252;
+  --text:#d4ddf0;
+  --muted:#5a6a8a;
+  --mono:'JetBrains Mono',monospace;
+  --display:'Unbounded',sans-serif;
+}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:var(--mono);overflow-x:hidden;min-height:100vh}
+
+/* scanline overlay */
+body::after{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
+  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,.03) 2px,rgba(0,0,0,.03) 4px);
+}
+
+/* grid bg */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;
+  background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);
+  background-size:60px 60px;opacity:.25;
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  height:60px;display:flex;align-items:center;justify-content:space-between;
+  padding:0 40px;
+  background:rgba(6,8,12,.92);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--border);
+}
+.nav-brand{
+  font-family:var(--display);font-size:15px;font-weight:900;letter-spacing:1px;
+  display:flex;align-items:center;gap:10px;
+}
+.nav-brand .dot{width:8px;height:8px;background:var(--accent);border-radius:50%;box-shadow:0 0 10px var(--accent);animation:blink 2s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.3}}
+.nav-links{display:flex;gap:28px;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:12px;letter-spacing:.5px;transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-dl{
+  padding:8px 20px;background:var(--accent2);color:#fff;
+  font-family:var(--display);font-size:11px;font-weight:700;letter-spacing:1px;
+  text-decoration:none;transition:background .2s,transform .15s;
+  clip-path:polygon(0 0,calc(100% - 8px) 0,100% 8px,100% 100%,8px 100%,0 calc(100% - 8px));
+}
+.nav-dl:hover{background:var(--accent);transform:translateY(-1px)}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;display:flex;align-items:center;
+  padding:100px 40px 60px;position:relative;overflow:hidden;
+}
+.hero-glow{
+  position:absolute;top:30%;left:50%;transform:translate(-50%,-50%);
+  width:700px;height:400px;
+  background:radial-gradient(ellipse,rgba(77,159,255,.07) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero-inner{max-width:1100px;margin:0 auto;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:60px;align-items:center}
+
+.hero-left{}
+.hero-tag{
+  display:inline-flex;align-items:center;gap:8px;
+  border:1px solid var(--border2);background:rgba(77,159,255,.05);
+  padding:5px 12px;font-size:10px;letter-spacing:2px;color:var(--green);
+  margin-bottom:32px;
+  animation:fadeUp .5s ease both;
+}
+.hero-tag::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--green);box-shadow:0 0 8px var(--green);animation:blink 2s infinite}
+
+h1.hero-title{
+  font-family:var(--display);
+  font-size:clamp(44px,5vw,72px);
+  font-weight:900;
+  line-height:1;
+  letter-spacing:-1px;
+  margin-bottom:20px;
+  animation:fadeUp .5s .1s ease both;
+}
+h1.hero-title .blue{color:var(--accent)}
+h1.hero-title .dim{color:var(--muted)}
+
+.hero-sub{
+  font-size:13px;color:var(--muted);line-height:1.8;
+  max-width:440px;margin-bottom:40px;font-weight:300;
+  animation:fadeUp .5s .2s ease both;
+}
+
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap;animation:fadeUp .5s .3s ease both}
+.btn-main{
+  display:inline-flex;align-items:center;gap:10px;
+  padding:14px 28px;background:var(--accent);color:#04060a;
+  font-family:var(--display);font-weight:700;font-size:12px;letter-spacing:1.5px;
+  text-decoration:none;transition:all .2s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.btn-main:hover{background:#78bfff;transform:translateY(-2px);box-shadow:0 8px 32px rgba(77,159,255,.3)}
+.btn-sec{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:14px 24px;border:1px solid var(--border2);color:var(--muted);
+  font-family:var(--display);font-size:11px;letter-spacing:1px;
+  text-decoration:none;transition:all .2s;
+}
+.btn-sec:hover{border-color:var(--accent);color:var(--accent)}
+
+/* TERMINAL WINDOW */
+.hero-right{animation:fadeUp .5s .25s ease both}
+.terminal{
+  border:1px solid var(--border2);background:var(--s1);overflow:hidden;
+  box-shadow:0 0 60px rgba(77,159,255,.05);
+}
+.term-bar{
+  height:36px;background:var(--s2);border-bottom:1px solid var(--border);
+  display:flex;align-items:center;padding:0 16px;gap:8px;
+}
+.term-dot{width:10px;height:10px;border-radius:50%}
+.term-dot.r{background:#ff5252}.term-dot.y{background:#f0c84a}.term-dot.g{background:#22d98a}
+.term-title{font-size:11px;color:var(--muted);letter-spacing:1px;margin-left:8px}
+.term-body{padding:20px;font-size:12px;line-height:2}
+.t-comment{color:var(--muted)}
+.t-key{color:#a78bfa}
+.t-val{color:var(--accent)}
+.t-str{color:var(--green)}
+.t-num{color:var(--yellow)}
+.t-section{color:var(--text);font-weight:600;margin-top:4px}
+.t-ok{color:var(--green)}
+.t-run{color:var(--yellow)}
+.term-cursor{display:inline-block;width:8px;height:14px;background:var(--accent);animation:cursor .8s infinite;vertical-align:middle}
+@keyframes cursor{0%,100%{opacity:1}50%{opacity:0}}
+
+/* ── STATS BAR ── */
+.stats-bar{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);border-bottom:1px solid var(--border);
+  background:var(--s1);
+  display:flex;justify-content:center;flex-wrap:wrap;
+}
+.stat{
+  padding:24px 48px;display:flex;flex-direction:column;align-items:center;gap:4px;
+  border-right:1px solid var(--border);
+}
+.stat:last-child{border-right:none}
+.stat-val{font-family:var(--display);font-size:28px;font-weight:900;color:var(--accent)}
+.stat-label{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase}
+
+/* ── SECTIONS ── */
+section.block{padding:80px 40px;position:relative;z-index:1}
+.inner{max-width:1100px;margin:0 auto}
+.sec-label{font-size:10px;letter-spacing:3px;color:var(--accent);text-transform:uppercase;margin-bottom:12px;font-weight:600}
+.sec-title{font-family:var(--display);font-size:clamp(28px,3vw,42px);font-weight:900;margin-bottom:12px;letter-spacing:-1px}
+.sec-sub{font-size:13px;color:var(--muted);line-height:1.8;max-width:520px;margin-bottom:48px;font-weight:300}
+.divider{height:1px;background:linear-gradient(90deg,transparent,var(--border),transparent);margin:0}
+
+/* ── FEATURE GRID ── */
+.feat-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;background:var(--border)}
+.feat{
+  background:var(--s1);padding:36px 32px;transition:background .25s;
+  position:relative;overflow:hidden;
+}
+.feat::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:2px;
+  background:linear-gradient(90deg,transparent,var(--accent),transparent);
+  opacity:0;transition:opacity .3s;
+}
+.feat:hover{background:var(--s2)}
+.feat:hover::before{opacity:1}
+.feat-label{
+  font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase;
+  margin-bottom:16px;display:flex;align-items:center;gap:8px;
+}
+.feat-label::before{content:'';width:16px;height:1px;background:var(--border2)}
+.feat-icon{font-size:28px;margin-bottom:16px}
+.feat-title{font-family:var(--display);font-size:16px;font-weight:700;margin-bottom:10px;letter-spacing:.5px}
+.feat-desc{font-size:12px;color:var(--muted);line-height:1.8;font-weight:300}
+.feat-badge{
+  display:inline-block;margin-top:14px;
+  padding:3px 10px;font-size:9px;letter-spacing:1.5px;font-weight:700;
+}
+.badge-live{background:rgba(34,217,138,.1);color:var(--green);border:1px solid rgba(34,217,138,.3)}
+.badge-soon{background:rgba(240,200,74,.08);color:var(--yellow);border:1px solid rgba(240,200,74,.25)}
+
+/* ── HOW TO ── */
+.steps{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1px;background:var(--border);border:1px solid var(--border)}
+.step{background:var(--s1);padding:32px 28px}
+.step-num{
+  font-family:var(--display);font-size:40px;font-weight:900;
+  color:transparent;-webkit-text-stroke:1px var(--border2);
+  margin-bottom:16px;line-height:1;
+}
+.step-title{font-family:var(--display);font-size:14px;font-weight:700;margin-bottom:8px}
+.step-desc{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
+.step-code{margin-top:10px;padding:6px 10px;background:var(--bg);border:1px solid var(--border2);font-size:11px;color:var(--accent);display:inline-block}
+
+/* ── DOWNLOAD SECTION ── */
+.dl-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);border:1px solid var(--border)}
+.dl-card{background:var(--s1);padding:44px;display:flex;flex-direction:column;gap:24px}
+.dl-card.main{background:var(--s2)}
+.dl-card-tag{font-size:9px;letter-spacing:2px;color:var(--muted);text-transform:uppercase}
+.dl-card-tag.live{color:var(--accent)}
+.dl-card-title{font-family:var(--display);font-size:26px;font-weight:900;letter-spacing:-1px}
+.dl-card-sub{font-size:12px;color:var(--muted);line-height:1.7;font-weight:300}
+.dl-ver-row{display:flex;flex-wrap:wrap;gap:16px}
+.dl-meta{font-size:11px;color:var(--muted)}
+.dl-meta b{color:var(--text);font-weight:500}
+.btn-dl{
+  display:inline-flex;align-items:center;justify-content:center;gap:10px;
+  padding:16px 28px;background:var(--accent);color:#04060a;
+  font-family:var(--display);font-weight:700;font-size:13px;letter-spacing:1.5px;
+  text-decoration:none;transition:all .2s;
+  clip-path:polygon(0 0,calc(100% - 10px) 0,100% 10px,100% 100%,10px 100%,0 calc(100% - 10px));
+}
+.btn-dl:hover{background:#78bfff;transform:translateY(-2px);box-shadow:0 8px 32px rgba(77,159,255,.3)}
+.btn-dl-ghost{
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  padding:16px 24px;border:1px solid var(--border2);color:var(--muted);
+  font-family:var(--display);font-size:11px;letter-spacing:1px;
+  text-decoration:none;transition:all .2s;
+}
+.btn-dl-ghost:hover{border-color:var(--accent);color:var(--accent)}
+
+/* ── FOOTER ── */
+footer{
+  position:relative;z-index:1;
+  border-top:1px solid var(--border);
+  padding:40px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:20px;
+  background:rgba(6,8,12,.8);
+}
+.f-brand{font-family:var(--display);font-size:16px;font-weight:900;letter-spacing:1px}
+.f-brand span{color:var(--accent)}
+.f-links{display:flex;gap:24px}
+.f-links a{font-size:11px;color:var(--muted);text-decoration:none;letter-spacing:.5px;transition:color .2s}
+.f-links a:hover{color:var(--text)}
+.f-copy{font-size:10px;color:var(--muted);letter-spacing:1.5px}
+
+@keyframes fadeUp{from{opacity:0;transform:translateY(18px)}to{opacity:1;transform:translateY(0)}}
+
+@media(max-width:800px){
+  nav{padding:0 20px}
+  .nav-links{display:none}
+  .hero{padding:90px 20px 50px}
+  .hero-inner{grid-template-columns:1fr;gap:40px}
+  .hero-right{display:none}
+  .stat{padding:20px 24px}
+  section.block{padding:60px 20px}
+  .dl-grid{grid-template-columns:1fr}
+  footer{padding:28px 20px;flex-direction:column;align-items:flex-start}
+}
+</style>
 </head>
 <body>
-    <!-- Navbar -->
-    <nav class="fixed top-0 left-0 right-0 z-50 bg-black/60 backdrop-blur-xl border-b border-white/5">
-        <div class="max-w-7xl mx-auto px-6 h-16 flex items-center justify-between">
-            <div class="flex items-center gap-2">
-                <i class="fas fa-anchor text-blue-500 text-2xl"></i>
-                <span class="text-xl font-black uppercase italic tracking-tighter">Exon <span class="text-blue-500">Macro</span></span>
-            </div>
-            <a href="#download" class="bg-blue-600 hover:bg-blue-500 text-white px-6 py-2 rounded-xl font-bold transition-all">Скачать</a>
-        </div>
-    </nav>
 
-    <!-- Hero -->
-    <section class="relative h-screen flex items-center justify-center overflow-hidden">
-        <div class="absolute inset-0 z-0">
-            <img src="https://pibig.info/uploads/posts/2024-11/1730704944_pibig-info-p-fish-robloks-krasivo-6.jpg" class="w-full h-full object-cover opacity-30">
-            <div class="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-zinc-950"></div>
-        </div>
-        <div class="relative z-10 text-center px-4 max-w-4xl">
-            <div class="inline-flex items-center gap-2 bg-blue-500/10 border border-blue-500/20 px-4 py-1.5 rounded-full mb-8">
-                <span class="w-2 h-2 bg-blue-500 rounded-full animate-ping"></span>
-                <span class="text-blue-400 text-xs font-bold uppercase tracking-widest">Макрос Доступен</span>
-            </div>
-            <h1 class="text-6xl md:text-8xl font-black mb-6 tracking-tighter uppercase italic leading-none">Fisch <span class="text-blue-500 text-glow">Macro</span></h1>
-            <p class="text-xl text-zinc-400 mb-12 max-w-2xl mx-auto">Экономьте время на нудном гринде. Наш макрос берет всю скучную работу на себя.</p>
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <a href="#download" class="w-full sm:w-auto bg-blue-600 hover:bg-blue-500 text-white px-10 py-5 rounded-2xl text-lg font-black transition-all hover:scale-105 shadow-2xl shadow-blue-600/30">СКАЧАТЬ BETA</a>
-                <a href="https://www.autohotkey.com/download/ahk-v2.exe" target="_blank" class="w-full sm:w-auto bg-zinc-800/50 hover:bg-zinc-700 text-white px-10 py-5 rounded-2xl text-lg font-black transition-all border border-zinc-700">AHK v2</a>
-            </div>
-        </div>
-    </section>
+<!-- NAV -->
+<nav>
+  <div class="nav-brand">
+    <div class="dot"></div>
+    EXON <span style="color:var(--accent)">MACRO</span>
+  </div>
+  <div class="nav-links">
+    <a href="#features">Функции</a>
+    <a href="#howto">Установка</a>
+    <a href="#download">Скачать</a>
+  </div>
+  <a href="#download" class="nav-dl">СКАЧАТЬ</a>
+</nav>
 
-    <!-- Features -->
-    <section class="py-24 bg-zinc-950">
-        <div class="max-w-7xl mx-auto px-6 grid md:grid-cols-3 gap-8">
-            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
-                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-yellow-400"><i class="fas fa-bolt text-3xl"></i></div>
-                <h3 class="text-2xl font-bold mb-4">Высокая Скорость</h3>
-                <p class="text-zinc-400">Оптимизированные алгоритмы для максимально быстрого вылова.</p>
-            </div>
-            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
-                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-green-400"><i class="fas fa-shield-alt text-3xl"></i></div>
-                <h3 class="text-2xl font-bold mb-4">100% Разрешено</h3>
-                <p class="text-zinc-400">Макросы разрешены в Fisch. Бан за них получить невозможно.</p>
-            </div>
-            <div class="bg-zinc-900/50 border border-white/5 p-10 rounded-[2.5rem] text-center card-glow transition-all">
-                <div class="mb-6 inline-block p-4 bg-zinc-800 rounded-2xl text-blue-400"><i class="fas fa-info-circle text-3xl"></i></div>
-                <h3 class="text-2xl font-bold mb-4">AHK v2 Ready</h3>
-                <p class="text-zinc-400">Макрос использует новейший движок v2 для стабильной работы.</p>
-            </div>
-        </div>
-    </section>
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-glow"></div>
+  <div class="hero-inner">
+    <div class="hero-left">
+      <div class="hero-tag">FISCH ROBLOX &nbsp;·&nbsp; BETA</div>
+      <h1 class="hero-title">
+        <span class="dim">EXON</span><br>
+        <span class="blue">MACRO</span>
+      </h1>
+      <p class="hero-sub">
+        Автоматическая рыбалка в Fisch. PD-контроллер, авто-оценка рыбы, тотемы, Discord-уведомления — всё в одном инструменте.<br><br>
+        Макросы <strong style="color:var(--green)">официально разрешены</strong> разработчиком Fisch.
+      </p>
+      <div class="hero-btns">
+        <a href="#download" class="btn-main">
+          <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 10.5L3 6.5h3V1h2v5.5h3L7 10.5zm-4 2h8v1.5H3V12.5z"/></svg>
+          СКАЧАТЬ
+        </a>
+        <a href="https://github.com/fragrollback-beep/Macros-fisch" class="btn-sec" target="_blank">GitHub →</a>
+      </div>
+    </div>
 
-    <!-- Downloads -->
-    <section id="download" class="py-32 bg-zinc-950">
-        <div class="max-w-6xl mx-auto px-6">
-            <h2 class="text-5xl font-black mb-20 text-center uppercase italic">Готовы начать?</h2>
-            <div class="grid lg:grid-cols-2 gap-8">
-                <div class="bg-zinc-900/50 border border-purple-500/20 rounded-[3rem] p-10 flex flex-col justify-between card-glow transition-all">
-                    <div class="mb-10 text-center md:text-left">
-                        <span class="px-4 py-1 bg-blue-600/20 text-blue-400 rounded-full text-[10px] font-black uppercase mb-4 inline-block">Текущая Beta</span>
-                        <h3 class="text-4xl font-black mb-4 italic uppercase">Exon Macro v0.0.12</h3>
-                        <p class="text-zinc-400 text-lg">Для работы обязательно нужен установленный AutoHotkey v2.</p>
-                    </div>
-                    <a href="https://github.com/fragrollback-beep/Macros-fisch/raw/refs/heads/main/ExonMacro0.0.12-beta.zip" class="bg-blue-600 hover:bg-blue-500 text-white py-6 rounded-2xl font-black text-xl text-center shadow-xl transition-all hover:scale-[1.02]">СКАЧАТЬ МАКРОС</a>
-                </div>
-                <div class="bg-zinc-900/50 border border-white/5 rounded-[3rem] p-10 flex flex-col justify-between card-glow transition-all">
-                    <div class="mb-10 text-center md:text-left">
-                        <span class="px-4 py-1 bg-zinc-800 text-zinc-400 rounded-full text-[10px] font-black uppercase mb-4 inline-block">Движок</span>
-                        <h3 class="text-4xl font-black mb-4 italic uppercase">AutoHotkey v2</h3>
-                        <p class="text-zinc-400 text-lg">Необходим для запуска любого .ahk макроса на вашем ПК.</p>
-                    </div>
-                    <a href="https://www.autohotkey.com/download/ahk-v2.exe" target="_blank" class="bg-zinc-800 hover:bg-zinc-700 text-white py-6 rounded-2xl font-black text-xl text-center border border-zinc-700 transition-all hover:scale-[1.02]">СКАЧАТЬ ДВИЖОК</a>
-                </div>
-            </div>
+    <!-- Terminal preview -->
+    <div class="hero-right">
+      <div class="terminal">
+        <div class="term-bar">
+          <div class="term-dot r"></div>
+          <div class="term-dot y"></div>
+          <div class="term-dot g"></div>
+          <span class="term-title">ExonMacro | Main.ahk</span>
         </div>
-    </section>
+        <div class="term-body">
+          <div><span class="t-comment">; Exon Macro — загружен</span></div>
+          <div><span class="t-comment">; ──────────────────────</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-section">[ ADJUSTMENTS ]</span></div>
+          <div><span class="t-key">update_rate</span>      <span class="t-num">21</span>   <span class="t-comment">; 1–35</span></div>
+          <div><span class="t-key">proportional</span>     <span class="t-num">0.42</span> <span class="t-comment">; 0.10–1.50</span></div>
+          <div><span class="t-key">derivative</span>       <span class="t-num">0.55</span> <span class="t-comment">; 0.00–1.00</span></div>
+          <div><span class="t-key">edge_boundary</span>    <span class="t-num">0.10</span> <span class="t-comment">; 0.02–0.30</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-section">[ MAIN ]</span></div>
+          <div><span class="t-key">rod_resilience</span>   <span class="t-num">0.20</span></div>
+          <div><span class="t-key">config</span>           <span class="t-str">"Clever Wise Rod"</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-section">[ STATUS ]</span></div>
+          <div><span class="t-key">state</span>    <span class="t-ok">RUNNING</span></div>
+          <div><span class="t-key">caught</span>   <span class="t-num">47</span></div>
+          <div><span class="t-key">success</span>  <span class="t-num">97.8%</span></div>
+          <div>&nbsp;</div>
+          <div><span class="t-comment">&gt; </span><span class="term-cursor"></span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
-    <!-- Footer -->
-    <footer class="py-24 bg-black border-t border-white/5 text-center px-6">
-        <div class="flex items-center justify-center gap-3 mb-10 text-3xl font-black italic">
-            <i class="fas fa-anchor text-blue-500"></i>
-            <span class="uppercase">Exon <span class="text-blue-500">Macro</span></span>
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stat">
+    <div class="stat-val" style="color:var(--green)">✓</div>
+    <div class="stat-label">Разрешён в Fisch</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">AHK<span style="font-size:16px"> v2</span></div>
+    <div class="stat-label">Движок</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val">v2.0.26</div>
+    <div class="stat-label">Версия AHK</div>
+  </div>
+  <div class="stat">
+    <div class="stat-val" id="stat-ver">—</div>
+    <div class="stat-label">Версия Exon</div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- FEATURES -->
+<section class="block" id="features">
+  <div class="inner">
+    <div class="sec-label">Возможности</div>
+    <h2 class="sec-title">Что умеет Exon</h2>
+    <p class="sec-sub">От умного балансировщика до уведомлений в Discord — всё для максимально удобного гринда.</p>
+
+    <div class="feat-grid">
+
+      <div class="feat">
+        <div class="feat-label">Алгоритм</div>
+        <div class="feat-icon">⚙️</div>
+        <div class="feat-title">PD-Контроллер</div>
+        <div class="feat-desc">Пропорционально-дифференциальный балансировщик с демпфингом скорости и предсказанием движения. Удерживает планку точно на цели.</div>
+        <span class="feat-badge badge-live">РАБОТАЕТ</span>
+      </div>
+
+      <div class="feat">
+        <div class="feat-label">Профили</div>
+        <div class="feat-icon">💾</div>
+        <div class="feat-title">Config-профили</div>
+        <div class="feat-desc">Сохрани настройки для каждой удочки отдельно. Загрузи нужный профиль в один клик — больше не нужно перенастраивать каждый раз.</div>
+        <span class="feat-badge badge-live">РАБОТАЕТ</span>
+      </div>
+
+      <div class="feat">
+        <div class="feat-label">Оценка</div>
+        <div class="feat-icon">🎯</div>
+        <div class="feat-title">Авто-Оценка рыбы</div>
+        <div class="feat-desc">Макрос автоматически оценивает выловленную рыбу на нужную мутацию. Выбери мутацию, укажи точку клика — и всё.</div>
+        <span class="feat-badge badge-live">РАБОТАЕТ</span>
+      </div>
+
+      <div class="feat">
+        <div class="feat-label">Тотемы</div>
+        <div class="feat-icon">🏺</div>
+        <div class="feat-title">Авто-Тотем</div>
+        <div class="feat-desc">Управляет тотемами автоматически: ждёт ночь, Aurora или истечения срока, затем активирует и переэкипирует удочку.</div>
+        <span class="feat-badge badge-soon">СКОРО</span>
+      </div>
+
+      <div class="feat">
+        <div class="feat-label">Уведомления</div>
+        <div class="feat-icon">🔔</div>
+        <div class="feat-title">Discord Webhooks</div>
+        <div class="feat-desc">Итоги сессии, процент успеха, количество уловов — всё автоматически отправляется в твой Discord-канал по расписанию.</div>
+        <span class="feat-badge badge-soon">СКОРО</span>
+      </div>
+
+      <div class="feat">
+        <div class="feat-label">Интерфейс</div>
+        <div class="feat-icon">🎨</div>
+        <div class="feat-title">Темы оформления</div>
+        <div class="feat-desc">7 встроенных тем: Default, Crimson, Emerald, Amber, Lavender, Arctic, Slate. Или настрой собственные цвета по HEX-кодам.</div>
+        <span class="feat-badge badge-live">РАБОТАЕТ</span>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- HOW TO -->
+<section class="block" id="howto">
+  <div class="inner">
+    <div class="sec-label">Установка</div>
+    <h2 class="sec-title">Как запустить</h2>
+    <p class="sec-sub">Четыре шага и макрос работает.</p>
+
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">01</div>
+        <div class="step-title">Установи AHK</div>
+        <div class="step-desc">Скачай и установи AutoHotkey ровно версии 2.0.26. Другие версии не подойдут.</div>
+        <div class="step-code">AutoHotkey_2.0.26</div>
+      </div>
+      <div class="step">
+        <div class="step-num">02</div>
+        <div class="step-title">Скачай Exon</div>
+        <div class="step-desc">Скачай ZIP-архив и распакуй в любую папку.</div>
+        <div class="step-code">ExonMacro.zip → распаковать</div>
+      </div>
+      <div class="step">
+        <div class="step-num">03</div>
+        <div class="step-title">Открой Fisch</div>
+        <div class="step-desc">Зайди в Roblox и открой игру Fisch. Убедись что удочка экипирована.</div>
+        <div class="step-code">Roblox → Fisch</div>
+      </div>
+      <div class="step">
+        <div class="step-num">04</div>
+        <div class="step-title">Запусти макрос</div>
+        <div class="step-desc">Запусти Main.ahk и нажми F1 для старта. F4 — перезагрузка. Сохрани настройки через кнопку New/Save.</div>
+        <div class="step-code">F1 — старт · F4 — reload</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- DOWNLOAD -->
+<section class="block" id="download">
+  <div class="inner">
+    <div class="sec-label">Скачать</div>
+    <h2 class="sec-title">Начать прямо сейчас</h2>
+    <p class="sec-sub">Скачай макрос и AHK — и можно запускать.</p>
+
+    <div class="dl-grid">
+
+      <!-- Macro -->
+      <div class="dl-card main">
+        <div class="dl-card-tag live">● Текущая Beta</div>
+        <div class="dl-card-title" id="dl-title">EXON MACRO</div>
+        <div class="dl-card-sub">Основной файл макроса. Требует установленный AutoHotkey v2.0.26. Распакуй архив и запусти Main.ahk.</div>
+        <div class="dl-ver-row" id="dl-meta">
+          <div class="dl-meta">ВЕРСИЯ <b id="meta-ver">—</b></div>
+          <div class="dl-meta">AHK <b>2.0.26</b></div>
+          <div class="dl-meta">СТАТУС <b style="color:var(--green)">АКТИВЕН</b></div>
         </div>
-        <p class="text-zinc-500 text-lg max-w-3xl mx-auto mb-12">Макросы — легальный инструмент в Fisch. Мы помогаем вам избежать нудного гринда и получать удовольствие от игры.</p>
-        <div class="text-zinc-700 font-bold uppercase text-xs tracking-widest">&copy; 2026 EXON MACRO.</div>
-    </footer>
+        <div style="display:flex;gap:12px;flex-wrap:wrap">
+          <a href="#" class="btn-dl" id="dl-btn">
+            <svg width="14" height="14" viewBox="0 0 14 14" fill="currentColor"><path d="M7 10.5L3 6.5h3V1h2v5.5h3L7 10.5zm-4 2h8v1.5H3V12.5z"/></svg>
+            СКАЧАТЬ ZIP
+          </a>
+          <a href="https://github.com/fragrollback-beep/Macros-fisch/releases" class="btn-dl-ghost" target="_blank">Все релизы →</a>
+        </div>
+      </div>
+
+      <!-- AHK -->
+      <div class="dl-card">
+        <div class="dl-card-tag">Движок</div>
+        <div class="dl-card-title">AUTOHOTKEY</div>
+        <div class="dl-card-sub">Обязательный компонент для запуска .ahk файлов. Нужна <strong style="color:var(--text)">именно версия 2.0.26</strong> — не новее и не старее.</div>
+        <div class="dl-ver-row">
+          <div class="dl-meta">ВЕРСИЯ <b>2.0.26</b></div>
+          <div class="dl-meta">ТИП <b>v2 (обязательно)</b></div>
+        </div>
+        <a href="https://www.autohotkey.com/download/2.0/AutoHotkey_2.0.26_setup.exe" class="btn-dl-ghost" style="text-align:center">
+          СКАЧАТЬ AHK 2.0.26
+        </a>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="f-brand">EX<span>ON</span> MACRO</div>
+  <div class="f-links">
+    <a href="https://github.com/fragrollback-beep/Macros-fisch" target="_blank">GitHub</a>
+    <a href="#features">Функции</a>
+    <a href="#download">Скачать</a>
+  </div>
+  <div class="f-copy">© 2026 MISERY · NOT AFFILIATED WITH ROBLOX</div>
+</footer>
+
+<script>
+const OWNER = 'fragrollback-beep';
+const REPO  = 'Macros-fisch';
+
+async function loadRelease() {
+  try {
+    const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`);
+    if (!r.ok) throw 0;
+    const d = await r.json();
+
+    const tag  = d.tag_name || '';
+    const date = d.published_at ? new Date(d.published_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}) : '';
+    const zip  = d.assets?.find(a => a.name.endsWith('.zip'));
+    const url  = zip ? zip.browser_download_url : d.zipball_url;
+
+    // Fill in
+    if (tag) {
+      document.getElementById('stat-ver').textContent = tag;
+      document.getElementById('dl-title').textContent = 'EXON MACRO ' + tag;
+      document.getElementById('meta-ver').textContent = tag;
+    }
+    if (date) {
+      const el = document.createElement('div');
+      el.className = 'dl-meta';
+      el.innerHTML = `ДАТА <b>${date}</b>`;
+      document.getElementById('dl-meta').appendChild(el);
+    }
+    if (url) {
+      document.getElementById('dl-btn').href = url;
+    }
+  } catch(e) {
+    document.getElementById('dl-btn').href = `https://github.com/${OWNER}/${REPO}/releases/latest`;
+    document.getElementById('stat-ver').textContent = 'BETA';
+  }
+}
+
+loadRelease();
+</script>
 </body>
 </html>
