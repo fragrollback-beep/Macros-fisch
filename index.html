@@ -525,35 +525,66 @@ const OWNER = 'fragrollback-beep';
 const REPO  = 'Macros-fisch';
 
 async function loadRelease() {
+  let verFromTxt = null;
+  let dateFromRelease = '';
+  let urlFromRelease = null;
+
+  // Step 1: read version_beta.txt — always has the newest version string
+  try {
+    const r = await fetch(`https://raw.githubusercontent.com/${OWNER}/${REPO}/main/version_beta.txt`);
+    if (r.ok) {
+      verFromTxt = (await r.text()).trim(); // e.g. "v0.0.20-beta"
+    }
+  } catch(e) {}
+
+  // Step 2: get latest Release for download URL and date
   try {
     const r = await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/releases/latest`);
-    if (!r.ok) throw 0;
-    const d = await r.json();
+    if (r.ok) {
+      const d = await r.json();
+      if (d.tag_name) {
+        dateFromRelease = d.published_at
+          ? new Date(d.published_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'})
+          : '';
+        const zip = d.assets?.find(a => a.name.endsWith('.zip'));
+        urlFromRelease = zip ? zip.browser_download_url : d.zipball_url;
 
-    const tag  = d.tag_name || '';
-    const date = d.published_at ? new Date(d.published_at).toLocaleDateString('ru-RU',{day:'numeric',month:'long',year:'numeric'}) : '';
-    const zip  = d.assets?.find(a => a.name.endsWith('.zip'));
-    const url  = zip ? zip.browser_download_url : d.zipball_url;
+        // If txt not found, use release tag as version
+        if (!verFromTxt) verFromTxt = d.tag_name;
+      }
+    }
+  } catch(e) {}
 
-    // Fill in
-    if (tag) {
-      document.getElementById('stat-ver').textContent = tag;
-      document.getElementById('dl-title').textContent = 'EXON MACRO ' + tag;
-      document.getElementById('meta-ver').textContent = tag;
+  // Step 3: if no release URL yet, try to build one from version_beta.txt version number
+  if (!urlFromRelease && verFromTxt) {
+    // Extract numeric part: "v0.0.20-beta" -> "0.0.20"
+    const m = verFromTxt.match(/(\d+\.\d+\.\d+)/);
+    if (m) {
+      // Try common filename patterns
+      urlFromRelease = `https://github.com/${OWNER}/${REPO}/raw/main/ExonMacro${m[1]}-beta.zip`;
+    } else {
+      urlFromRelease = `https://github.com/${OWNER}/${REPO}/releases/latest`;
     }
-    if (date) {
-      const el = document.createElement('div');
-      el.className = 'dl-meta';
-      el.innerHTML = `ДАТА <b>${date}</b>`;
-      document.getElementById('dl-meta').appendChild(el);
-    }
-    if (url) {
-      document.getElementById('dl-btn').href = url;
-    }
-  } catch(e) {
-    document.getElementById('dl-btn').href = `https://github.com/${OWNER}/${REPO}/releases/latest`;
-    document.getElementById('stat-ver').textContent = 'BETA';
   }
+
+  // Final fallback
+  if (!verFromTxt) verFromTxt = 'v0.0.20-beta';
+  if (!urlFromRelease) urlFromRelease = `https://github.com/${OWNER}/${REPO}/releases/latest`;
+
+  setVersion(verFromTxt, dateFromRelease, urlFromRelease);
+}
+
+function setVersion(tag, date, url) {
+  document.getElementById('stat-ver').textContent = tag;
+  document.getElementById('dl-title').textContent = 'EXON MACRO ' + tag.toUpperCase();
+  document.getElementById('meta-ver').textContent = tag;
+  if (date) {
+    const el = document.createElement('div');
+    el.className = 'dl-meta';
+    el.innerHTML = `ДАТА <b>${date}</b>`;
+    document.getElementById('dl-meta').appendChild(el);
+  }
+  document.getElementById('dl-btn').href = url;
 }
 
 loadRelease();
